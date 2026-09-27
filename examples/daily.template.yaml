@@ -1,0 +1,46 @@
+# Copy to local/daily.yaml, then supply real game screenshots and steps.
+# Template paths are relative to this YAML file. These files do not ship:
+# crop them from your actual game screenshots into local/templates/.
+# Keep example: true while preparing/inspecting; set false after calibration.
+version: 1
+name: 第一条日常（待录入实际流程）
+example: true
+window:
+  title_contains: 替换为实际游戏窗口标题
+  width: 1920
+  height: 1080
+targets:
+  home:
+    template: templates/home.png
+    threshold: 0.95
+  daily_entry:
+    template: templates/daily-entry.png
+    threshold: 0.95
+  daily_page:
+    template: templates/daily-page.png
+    threshold: 0.95
+  daily_action:
+    template: templates/daily-action.png
+    threshold: 0.95
+  completed:
+    template: templates/completed.png
+    threshold: 0.95
+completion: [completed]
+steps:
+  - id: open_daily
+    when: [home, daily_entry]
+    action:
+      type: click
+      target: daily_entry
+    success: [daily_page]
+    next: [perform_daily]
+    timeout: 10
+  - id: perform_daily
+    when: [daily_page, daily_action]
+    action:
+      type: click
+      target: daily_action
+    success: [completed]
+    timeout: 10
+    max_attempts: 1
+    repeat_safe: false
